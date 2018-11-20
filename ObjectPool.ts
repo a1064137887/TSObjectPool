@@ -64,11 +64,26 @@ module pool {
                     obj.reset();
                 }
             } else {
-                if (paramArr != null) {
-                    obj = new this._classObjDic[poolName].constructor(paramArr);
-                } else {
-                    obj = new this._classObjDic[poolName].constructor();
-                }
+				let len = params.length;
+				if(len > ObjectPool.MAX_PARAMS_LEN)
+				{
+					console.error(" ***** 构造函数参数个数过多 ***** ");
+					return null;
+				}
+				switch(len)
+				{
+					case 0 : obj = new this._classObjDic[poolName].constructor(); break;
+					case 1 : obj = new this._classObjDic[poolName].constructor(params[0]); break;
+					case 2 : obj = new this._classObjDic[poolName].constructor(params[0], params[1]); break;
+					case 3 : obj = new this._classObjDic[poolName].constructor(params[0], params[1], params[2]); break;                    
+					case 4 : obj = new this._classObjDic[poolName].constructor(params[0], params[1], params[2], params[3]); break;
+					case 5 : obj = new this._classObjDic[poolName].constructor(params[0], params[1], params[2], params[3], params[4]); break;
+					case 6 : obj = new this._classObjDic[poolName].constructor(params[0], params[1], params[2], params[3], params[4], params[5]); break;
+					case 6 : obj = new this._classObjDic[poolName].constructor(params[0], params[1], params[2], params[3], params[4], params[5], params[6]); break;                    
+					case 6 : obj = new this._classObjDic[poolName].constructor(params[0], params[1], params[2], params[3], params[4], params[5], params[6], params[7]); break;                    
+					case 6 : obj = new this._classObjDic[poolName].constructor(params[0], params[1], params[2], params[3], params[4], params[5], params[6], params[7], params[8]); break;                    
+					case 6 : obj = new this._classObjDic[poolName].constructor(params[0], params[1], params[2], params[3], params[4], params[5], params[6], params[7], params[8], params[9]); break;                                     
+				}
             }
             return obj;
         }
