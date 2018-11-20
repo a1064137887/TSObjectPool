@@ -25,7 +25,7 @@ module pool {
                 var arr: Array<any> = this._poolDic[poolName];
                 var l: number = arr.length;
                 for (var i: number = 0; i < l; i++) {
-                    this.disposeObj(arr.pop());
+                    this.destructObj(arr.pop());
                 }
                 arr.length = 0;
                 delete this._poolDic[poolName];
@@ -36,13 +36,13 @@ module pool {
         public pushObj(poolName: string, obj: any): void {
             if (obj == null) return;
             if (!this._poolDic[poolName]) {
-                this.disposeObj(obj);
+                this.destructObj(obj);
                 return;
             }
             var arr: Array<any> = this._poolDic[poolName];
             var maxCount: number = this._cacheCountDic[poolName] ? this._cacheCountDic[poolName] : ObjectPool.CACHE_COUNT;
             if (arr.length >= maxCount) {
-                this.disposeObj(obj);
+                this.destructObj(obj);
                 return;
             }
             if (obj.recycle) {
@@ -74,7 +74,7 @@ module pool {
         }
         private destructObj(obj: any): void {
             if (obj == null) return;
-            if (obj.dispose) {
+            if (obj.destruct) {
                 obj.destruct();
             } else {
                 if (obj.stop) {
